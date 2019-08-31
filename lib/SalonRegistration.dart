@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'SelectOptions.dart';
 import 'SalonRegistration1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 
 
@@ -29,7 +30,7 @@ class SalonRegistrationState extends State<SalonRegistration>
 
   void saveDataInDb(String uid)
   {
-   /*   DatabaseReference dBase = FirebaseDatabase.instance.reference();
+    DatabaseReference dBase = FirebaseDatabase.instance.reference();
       DatabaseReference users_ref = dBase.reference().child("users");
       DatabaseReference users_child_ref =  users_ref.child(uid);
       users_child_ref.set({
@@ -40,7 +41,7 @@ class SalonRegistrationState extends State<SalonRegistration>
         "Country":"Saudi Arabia",
         "City":"Riyadh"}).then((_value){
               print("Data Inserted Successfully...");
-      }); */
+      });
   }
 
   @override
@@ -267,10 +268,10 @@ class SalonRegistrationState extends State<SalonRegistration>
                                                           builder: (context) =>
                                                               SalonRegistration1())); */
 
-                                              /*  var uid = signUp("mahesh.thippala11@gmail.com",
+                                               /* var uid = signUp("mahesh.cts123@gmail.com",
                                                     "Test@123"); */
 
-                                                  saveDataInDb("xyz123456");
+                                                   saveDataInDb("xyz123456");
 
 
                                                 }else{

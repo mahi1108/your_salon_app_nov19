@@ -38,7 +38,6 @@ target 'Runner' do
 
   # [START auth_pod]
   pod 'Firebase/Auth'
-  pod 'Firebase/Database'
   # [END auth_pod]
 
 
