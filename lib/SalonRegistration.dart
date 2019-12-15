@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'Login.dart';
 import 'SelectOptions.dart';
 import 'SalonRegistration1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-
+import 'AppConstants.dart';
+import 'User.dart';
 
 
 class SalonRegistration extends StatefulWidget
@@ -18,30 +20,103 @@ class SalonRegistration extends StatefulWidget
 class SalonRegistrationState extends State<SalonRegistration>
 {
 
+  TextEditingController name_cont = new TextEditingController();
+  TextEditingController mno_cont = new TextEditingController();
+  TextEditingController email_cont = new TextEditingController();
+  TextEditingController password_cont = new TextEditingController();
+  TextEditingController location_cont = new TextEditingController();
+  TextEditingController city_cont = new TextEditingController();
+
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<String> signUp(String email, String password) async {
-    FirebaseUser user = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<String> signUp() async {
 
-    print("User is :"+user.email);
+    try {
+      AppConstants.getpDialog(context, "", "Please wait...");
 
-    return user.uid;
+      String email = email_cont.text.toString();
+      String pass = password_cont.text.toString();
+      String mno = mno_cont.text.toString();
+      String city = city_cont.text.toString();
+      String location = location_cont.text.toString();
+
+
+      FirebaseUser user = await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: pass);
+
+      print("User is :" + user.email);
+
+      if (user.uid != null) {
+        User.email = email;
+        User.pass = pass;
+        User.mno = mno;
+        User.city = city;
+        User.location = location;
+        User.uid = user.uid.toString();
+        saveDataInDb();
+
+        return User.uid;
+
+        AppConstants.dismisspDialog();
+
+      } else {
+        print("User Creation is Failed..");
+        AppConstants.sDialog(context, AppConstants.getValue("40"),
+            AppConstants.getValue("41"));
+
+        AppConstants.dismisspDialog();
+
+
+        return null;
+      }
+    }catch(e){
+
+     print(e.toString());
+
+     AppConstants.sDialog(context, AppConstants.getValue("40"),
+         AppConstants.getValue("41"));
+
+     AppConstants.dismisspDialog();
+
+
+     return null;
+    }
+
+
+    return null;
   }
 
-  void saveDataInDb(String uid)
+  void saveDataInDb()
   {
+    if(SelectOptions.selected_option != 4) {
+      Navigator.push(context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  SalonRegistration1()));
+    }else {
+      AppConstants.getpDialog(context, "", "Please wait...");
+
     DatabaseReference dBase = FirebaseDatabase.instance.reference();
       DatabaseReference users_ref = dBase.reference().child("users");
-      DatabaseReference users_child_ref =  users_ref.child(uid);
+      DatabaseReference users_child_ref =  users_ref.child(User.uid);
       users_child_ref.set({
-        "name":"Mahesh",
-        "mno":"9985614637",
-        "email":"mahesh.thippala11@gmail.com",
-        "password":"Mahi1108",
-        "Country":"Saudi Arabia",
-        "City":"Riyadh"}).then((_value){
-              print("Data Inserted Successfully...");
+        "mno":User.mno,
+        "email":User.email,
+        "password":User.pass,
+        "location":User.location,
+        "city":User.city,
+        "selected_type":SelectOptions.selected_option
+      }).then((_value){
+             // print("Data Inserted Successfully...");
+        AppConstants.dismisspDialog();
+        Navigator.push(context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    Login()));
+
       });
+    }
   }
 
   @override
@@ -57,7 +132,7 @@ class SalonRegistrationState extends State<SalonRegistration>
                 Navigator.pop(context, false);
               }),
           backgroundColor: Colors.green,
-          title: new Text("Your Salon",
+          title: new Text(AppConstants.getValue("1"),
             style: new TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.normal,
@@ -98,11 +173,12 @@ class SalonRegistrationState extends State<SalonRegistration>
                                                       )
                                                   ),
                                                   prefixIcon: const Icon(Icons.account_circle),
-                                                  hintText: 'Username',
-                                                  labelText: 'Username',
-                                                  helperText: '* Username should be Email ID',
+                                                  hintText: AppConstants.getValue("2"),
+                                                  labelText: AppConstants.getValue("2"),
+                                                  helperText: AppConstants.getValue("3"),
                                                   prefixStyle: const TextStyle(color: Colors.green)
                                               ),
+                                              controller: email_cont,
                                             ),
                                           ))
                                     ],
@@ -133,11 +209,12 @@ class SalonRegistrationState extends State<SalonRegistration>
                                                       )
                                                   ),
                                                   prefixIcon: const Icon(Icons.lock),
-                                                  hintText: 'Password',
-                                                  labelText: 'Password',
-                                                  helperText: '* Password should be >= 6 characters',
+                                                  hintText: AppConstants.getValue("4"),
+                                                  labelText: AppConstants.getValue("4"),
+                                                  helperText: AppConstants.getValue("5"),
                                                   prefixStyle: const TextStyle(color: Colors.green)
                                               ),
+                                              controller: password_cont,
                                             ),
                                           ))
                                     ],
@@ -167,11 +244,12 @@ class SalonRegistrationState extends State<SalonRegistration>
                                                       )
                                                   ),
                                                   prefixIcon: const Icon(Icons.phone_iphone),
-                                                  hintText: 'Mobile Number',
-                                                  labelText: 'Mobile Number',
-                                                  helperText: '* Mobile Number should be only number',
+                                                  hintText: AppConstants.getValue("25"),
+                                                  labelText: AppConstants.getValue("25"),
+                                                  helperText: AppConstants.getValue("26"),
                                                   prefixStyle: const TextStyle(color: Colors.green)
                                               ),
+                                              controller: mno_cont,
                                             ),
                                           ))
                                     ],
@@ -201,11 +279,12 @@ class SalonRegistrationState extends State<SalonRegistration>
                                                       )
                                                   ),
                                                   prefixIcon: const Icon(Icons.location_city),
-                                                  hintText: 'Select City',
-                                                  labelText: 'Select City',
-                                                  helperText: '* City should be a part of Saudi Arabia',
+                                                  hintText: AppConstants.getValue("27"),
+                                                  labelText: AppConstants.getValue("27"),
+                                                  helperText: AppConstants.getValue("28"),
                                                   prefixStyle: const TextStyle(color: Colors.green)
                                               ),
+                                              controller:  city_cont,
                                             ),
                                           ))
                                     ],
@@ -235,11 +314,12 @@ class SalonRegistrationState extends State<SalonRegistration>
                                                       )
                                                   ),
                                                   prefixIcon: const Icon(Icons.add_location),
-                                                  hintText: 'Select Location',
-                                                  labelText: 'Select Location',
-                                                  helperText: '* Location should be a part of Saudi Arabia',
+                                                  hintText: AppConstants.getValue("29"),
+                                                  labelText: AppConstants.getValue("29"),
+                                                  helperText: AppConstants.getValue("30"),
                                                   prefixStyle: const TextStyle(color: Colors.green)
                                               ),
+                                              controller: location_cont,
                                             ),
                                           ))
                                     ],
@@ -261,26 +341,22 @@ class SalonRegistrationState extends State<SalonRegistration>
                                             height: 40,
                                             child: new RaisedButton(
                                               onPressed: (){
-                                                if(SelectOptions.selected_option != 4) {
+                                                var uid = signUp();
 
-                                              /*    Navigator.push(context,
+                                                print("Uid is :"+uid.toString());
+
+    /*   if(SelectOptions.selected_option != 4) {
+                                                  Navigator.push(context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              SalonRegistration1())); */
-
-                                               /* var uid = signUp("mahesh.cts123@gmail.com",
-                                                    "Test@123"); */
-
-                                                   saveDataInDb("xyz123456");
-
-
+                                                              SalonRegistration1()));
                                                 }else{
 
-                                                }
+                                                } */
                                                 },
                                               color: Colors.green,
                                               child: new Text(
-                                                "Continue",
+                                                AppConstants.getValue("31"),
                                                 style: new TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.normal,

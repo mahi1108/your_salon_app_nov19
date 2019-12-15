@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'SalonRegistration.dart';
+import 'AppConstants.dart';
 
 class SelectOptions extends StatefulWidget
 {
@@ -26,7 +27,7 @@ class SelectOptionsState extends State<SelectOptions>
                 Navigator.pop(context, false);
               }),
           backgroundColor: Colors.green,
-          title: new Text("Your Salon",
+          title: new Text(AppConstants.getValue("1"),
             style: new TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.normal,
@@ -71,7 +72,7 @@ class SelectOptionsState extends State<SelectOptions>
                               },
                               color: Colors.green,
                               child: new Text(
-                                "Salon",
+                                AppConstants.getValue("9"),
                                 style: new TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,
@@ -107,7 +108,7 @@ class SelectOptionsState extends State<SelectOptions>
                               },
                               color: Colors.green,
                               child: new Text(
-                                "Business Women",
+                                AppConstants.getValue("10"),
                                 style: new TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,
@@ -144,7 +145,7 @@ class SelectOptionsState extends State<SelectOptions>
                               },
                               color: Colors.green,
                               child: new Text(
-                                "Business Guest",
+                                AppConstants.getValue("11"),
                                 style: new TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,
@@ -181,7 +182,7 @@ class SelectOptionsState extends State<SelectOptions>
                               },
                               color: Colors.green,
                               child: new Text(
-                                "Customer",
+                                AppConstants.getValue("12"),
                                 style: new TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,

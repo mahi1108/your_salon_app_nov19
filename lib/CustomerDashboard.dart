@@ -4,6 +4,7 @@ import 'SalonRegistration2.dart';
 import 'BusinessWomenRegistration2.dart';
 import 'BusinessGuestRegistration2.dart';
 import 'Maps.dart';
+import 'AppConstants.dart';
 
 
 class CustomerDashboard extends StatefulWidget {
@@ -29,7 +30,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                 Navigator.pop(context, false);
               }),
           backgroundColor: Colors.green,
-          title: new Text("Your Salon",
+          title: new Text(AppConstants.getValue("1"),
           style: new TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.normal,
@@ -96,7 +97,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       ),
                                                       new Flexible(
                                                           child: new Container(
-                                                            child: new Text('Makeup',
+                                                            child: new Text(AppConstants.getValue("13"),
                                                                 style: new TextStyle(
                                                                     color:
                                                                     Colors.green,
@@ -155,7 +156,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       new Flexible(
                                                         child: new Container(
                                                           child: new Text(
-                                                              'Hair Styles',
+                                                              AppConstants.getValue("14"),
                                                               style: new TextStyle(
                                                                   color: Colors
                                                                       .green,
@@ -218,7 +219,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       new Flexible(
                                                         child: new Container(
                                                           child: new Text(
-                                                              'Body Care',
+                                                              AppConstants.getValue("15"),
                                                               style: new TextStyle(
                                                                   color: Colors
                                                                       .green,
@@ -294,7 +295,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       new Flexible(
                                                           child: new Container(
                                                             child: new Text(
-                                                                'Hair Treatment',
+                                                                AppConstants.getValue("16"),
                                                                 style: new TextStyle(
                                                                     color:
                                                                     Colors.green,
@@ -356,7 +357,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       new Flexible(
                                                         child: new Container(
                                                           child: new Text(
-                                                              'Henna Design',
+                                                              AppConstants.getValue("17"),
                                                               style: new TextStyle(
                                                                   color: Colors
                                                                       .green,
@@ -420,7 +421,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       new Flexible(
                                                         child: new Container(
                                                           child: new Text(
-                                                              'Western Bath',
+                                                              AppConstants.getValue("18"),
                                                               style: new TextStyle(
                                                                   color: Colors
                                                                       .green,
@@ -497,7 +498,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       new Flexible(
                                                           child: new Container(
                                                             child: new Text(
-                                                                'Haircut',
+                                                                AppConstants.getValue("19"),
                                                                 style: new TextStyle(
                                                                     color:
                                                                     Colors.green,
@@ -559,7 +560,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       new Flexible(
                                                         child: new Container(
                                                           child: new Text(
-                                                              'Wax',
+                                                              AppConstants.getValue("20"),
                                                               style: new TextStyle(
                                                                   color: Colors
                                                                       .green,
@@ -623,7 +624,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       new Flexible(
                                                         child: new Container(
                                                           child: new Text(
-                                                              'Eyebrows',
+                                                              AppConstants.getValue("21"),
                                                               style: new TextStyle(
                                                                   color: Colors
                                                                       .green,
@@ -697,7 +698,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       ),
                                                       new Flexible(
                                                           child: new Container(
-                                                            child: new Text('Massage',
+                                                            child: new Text(AppConstants.getValue("22"),
                                                                 style: new TextStyle(
                                                                     color:
                                                                     Colors.green,
@@ -757,7 +758,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       ),
                                                       new Flexible(
                                                         child: new Container(
-                                                          child: new Text('Hair Protein',
+                                                          child: new Text(AppConstants.getValue("23"),
                                                               style: new TextStyle(
                                                                   color: Colors
                                                                       .green,
@@ -820,7 +821,7 @@ class CustomerDashboardState1 extends State<CustomerDashboard> {
                                                       ),
                                                       new Flexible(
                                                         child: new Container(
-                                                          child: new Text('Photography',
+                                                          child: new Text(AppConstants.getValue("24"),
                                                               style: new TextStyle(
                                                                   color: Colors
                                                                       .green,

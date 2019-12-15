@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'SelectOptions.dart';
 import 'Login.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'AppConstants.dart';
 
 class Maps extends StatefulWidget
 {
@@ -38,7 +39,7 @@ class MapsState extends State<Maps>
                 Navigator.pop(context, false);
               }),
           backgroundColor: Colors.green,
-          title: new Text("Your Salon",
+          title: new Text(AppConstants.getValue("1"),
             style: new TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.normal,

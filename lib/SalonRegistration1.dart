@@ -3,6 +3,11 @@ import 'SelectOptions.dart';
 import 'SalonRegistration2.dart';
 import 'BusinessWomenRegistration2.dart';
 import 'BusinessGuestRegistration2.dart';
+import 'AppConstants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'AppConstants.dart';
+import 'User.dart';
 
 
 class SalonRegistration1 extends StatefulWidget {
@@ -40,7 +45,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                 Navigator.pop(context, false);
               }),
           backgroundColor: Colors.green,
-          title: new Text("Your Salon",
+          title: new Text(AppConstants.getValue("1"),
             style: new TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.normal,
@@ -74,7 +79,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                     child: new SizedBox(
                                       width: 300,
                                       child: new Text(
-                                        'Select services available at your salon',
+                                        AppConstants.getValue("32"),
                                         style: new TextStyle(
                                             color: Colors.green,
                                             fontWeight: FontWeight.normal,
@@ -120,7 +125,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                   children: <Widget>[
                                                     new Flexible(
                                                         child: new Container(
-                                                      child: new Text('Makeup',
+                                                      child: new Text(AppConstants.getValue("13"),
                                                           style: new TextStyle(
                                                               color:
                                                                   Colors.green,
@@ -168,7 +173,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                     new Flexible(
                                                       child: new Container(
                                                         child: new Text(
-                                                            'Hair Styles',
+                                                            AppConstants.getValue("14"),
                                                             style: new TextStyle(
                                                                 color: Colors
                                                                     .green,
@@ -230,7 +235,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                     new Flexible(
                                                         child: new Container(
                                                       child: new Text(
-                                                          'Body Care',
+                                                          AppConstants.getValue("15"),
                                                           style: new TextStyle(
                                                               color:
                                                                   Colors.green,
@@ -279,7 +284,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                     new Flexible(
                                                       child: new Container(
                                                         child: new Text(
-                                                            'Hair Treatment',
+                                                            AppConstants.getValue("16"),
                                                             style: new TextStyle(
                                                                 color: Colors
                                                                     .green,
@@ -341,7 +346,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                     new Flexible(
                                                         child: new Container(
                                                       child: new Text(
-                                                          'Henna Design',
+                                                          AppConstants.getValue("17"),
                                                           style: new TextStyle(
                                                               color:
                                                                   Colors.green,
@@ -389,7 +394,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                     new Flexible(
                                                       child: new Container(
                                                         child: new Text(
-                                                            'Western Bath',
+                                                            AppConstants.getValue("18"),
                                                             style: new TextStyle(
                                                                 color: Colors
                                                                     .green,
@@ -450,7 +455,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                   children: <Widget>[
                                                     new Flexible(
                                                         child: new Container(
-                                                      child: new Text('Haircut',
+                                                      child: new Text(AppConstants.getValue("19"),
                                                           style: new TextStyle(
                                                               color:
                                                                   Colors.green,
@@ -497,7 +502,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                   children: <Widget>[
                                                     new Flexible(
                                                       child: new Container(
-                                                        child: new Text('Wax',
+                                                        child: new Text(AppConstants.getValue("20"),
                                                             style: new TextStyle(
                                                                 color: Colors
                                                                     .green,
@@ -559,7 +564,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                     new Flexible(
                                                         child: new Container(
                                                       child: new Text(
-                                                          'Eyebrows',
+                                                          AppConstants.getValue("21"),
                                                           style: new TextStyle(
                                                               color:
                                                                   Colors.green,
@@ -607,7 +612,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                     new Flexible(
                                                       child: new Container(
                                                         child: new Text(
-                                                            'Massage',
+                                                            AppConstants.getValue("22"),
                                                             style: new TextStyle(
                                                                 color: Colors
                                                                     .green,
@@ -669,7 +674,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                     new Flexible(
                                                         child: new Container(
                                                       child: new Text(
-                                                          'Hair Protein Treatment',
+                                                          AppConstants.getValue("23"),
                                                           style: new TextStyle(
                                                               color:
                                                                   Colors.green,
@@ -717,7 +722,7 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                     new Flexible(
                                                       child: new Container(
                                                         child: new Text(
-                                                            'Photography',
+                                                            AppConstants.getValue("24"),
                                                             style: new TextStyle(
                                                                 color: Colors
                                                                     .green,
@@ -759,6 +764,22 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                         height: 40,
                                         child: new RaisedButton(
                                           onPressed: () {
+
+                                            User.makeup = _makeup;
+                                            User.hairstyles = _hairstyles;
+                                            User.bodycare = _bodycare;
+                                            User.hairtreatment = _hairtreatment;
+                                            User.hennadesign = _hennadesign;
+                                            User.westernbath = _westernbath;
+                                            User.haircut = _haircut;
+                                            User.wax = _wax;
+                                            User.eyebrows = _eyebrows;
+                                            User.massage = _massage;
+                                            User.hairprotein = _hairprotein;
+                                            User.photography = _photography;
+
+                                           // saveDataInDb();
+
                                             if (SelectOptions.selected_option ==
                                                 1) {
                                               Navigator.push(context,
@@ -782,10 +803,12 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
                                                           BusinessGuestRegistration2()));
 
                                             }
+
+
                                           },
                                           color: Colors.green,
                                           child: new Text(
-                                            "Continue",
+                                            AppConstants.getValue("31"),
                                             style: new TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.normal,
@@ -814,4 +837,64 @@ class SalonRegistrationState1 extends State<SalonRegistration1> {
       ),
     );
   }
+
+  void saveDataInDb()
+  {
+    DatabaseReference dBase = FirebaseDatabase.instance.reference();
+    DatabaseReference users_ref = dBase.reference().child("users");
+    DatabaseReference users_child_ref =  users_ref.child(User.uid);
+    users_child_ref.set({
+     "mno":User.mno,
+     "email":User.email,
+     "password":User.pass,
+     "location":User.location,
+     "city":User.city,
+      "makeup":User.makeup,
+      "hairstyles":User.hairstyles,
+      "bodycare":User.bodycare,
+      "hairtreatment":User.hairtreatment,
+      "hennadesign":User.hennadesign,
+      "westernbath":User.westernbath,
+      "haircut":User.haircut,
+      "wax":User.wax,
+      "eyebrows":User.eyebrows,
+      "massage":User.massage,
+      "hairprotein":User.hairprotein,
+      "photography":User.photography,
+    }).then((_value){
+      // print("Data Inserted Successfully...");
+
+     /* Navigator.push(context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  SalonRegistration1())); */
+
+      if (SelectOptions.selected_option ==
+          1) {
+        Navigator.push(context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    SalonRegistration2()));
+      } else if (SelectOptions
+          .selected_option ==
+          2) {
+        Navigator.push(context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    BusinessWomenRegistration2()));
+
+      } else if (SelectOptions
+          .selected_option ==
+          3) {
+        Navigator.push(context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    BusinessGuestRegistration2()));
+
+      }
+
+    });
+  }
+
+
 }

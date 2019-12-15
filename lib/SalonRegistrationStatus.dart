@@ -1,68 +1,90 @@
 import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'Login.dart';
 import 'SelectOptions.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'AppConstants.dart';
 import 'User.dart';
 
-class BusinessWomenRegistration2 extends StatefulWidget
+class SalonRegistrationStatus extends StatefulWidget
 {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return BusinessWomenRegistrationState2();
+    return SalonRegistrationStatus2();
   }
 }
 
-class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
+class SalonRegistrationStatus2 extends State<SalonRegistrationStatus>
 {
 
   File selected_path; // this is for profile picture.
-  File selected_commercial_path; // this is for identity picture.
+  File selected_commercial_path; // this is for commercial picture.
   String upload_requester = "";
   String salon_reg_uploaded_url = "";
   String commercial_reg_uploaded_url = "";
+  bool payment_uploaded = false;
 
   void getProfilePicDownloadUrl(StorageUploadTask task) async{
 
+    AppConstants.getpDialog(context, "", "Please wait...");
+
     var down_url = await (await task.onComplete).ref.getDownloadURL();
+
+  //  AppConstants.dismisspDialog();
+
     String uploaded_url = down_url.toString();
     print("Uploaded File URL is : $uploaded_url");
 
-    if(upload_requester == "salon_reg"){
-      User.profile_pic1= uploaded_url;
-      print("profile_pic1 :"+ User.profile_pic1);
-    }else{
-      User.profile_pic2 = uploaded_url;
-      print("profile_pic2 :"+ User.profile_pic2);
-    }
+    DatabaseReference dBase = FirebaseDatabase.instance.reference();
+    DatabaseReference users_ref = dBase.reference().child("payments");
+    DatabaseReference users_child_ref =  users_ref.child(User.uid);
+    users_child_ref.set({
+      "payment_receipt" : uploaded_url
+    }).then((_value){
+      payment_uploaded = true;
+
+      AppConstants.sDialogNew(context,
+          AppConstants.getValue("40"),
+          AppConstants.getValue("46"));
+
+    });
+
+    /*  if(upload_requester == "salon_reg"){
+        User.profile_pic1= uploaded_url;
+        print("profile_pic1 :"+ User.profile_pic1);
+      }else{
+        User.profile_pic2 = uploaded_url;
+        print("profile_pic2 :"+ User.profile_pic2);
+      } */
+
   }
 
 
   Future  uploadStatus(StorageUploadTask task)
   async {
 
+  //  AppConstants.getpDialog(context, "", "Please wait...");
+
     final StreamSubscription<StorageTaskEvent> streamSubscription = task.events.listen((event) {
       print('EVENT ${event.type}');
 
+  //    AppConstants.dismisspDialog();
+
       if(event.type == StorageTaskEventType.success)
-      {
-        getProfilePicDownloadUrl(task);
-      }
+        {
+            getProfilePicDownloadUrl(task);
+        }
 
     });
 
     await task.onComplete;
     streamSubscription.cancel();
   }
-
-
-
 
   DecorationImage getSelectedImage()
   {
@@ -77,9 +99,9 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
       StorageReference sRef = FirebaseStorage().ref().child("photos/"+User.uid+"/");
       StorageReference sReg_photo = sRef.child("salon_reg");
       StorageUploadTask task =  sReg_photo.putFile(selected_path);
-   //   AppConstants.getpDialog(context, "", "Please wait...");
+      //AppConstants.getpDialog(context, "", "Please wait...");
       uploadStatus(task);
-   //   AppConstants.dismisspDialog();
+     // AppConstants.dismisspDialog();
 
       return new DecorationImage(
           image: new FileImage(selected_path),
@@ -97,20 +119,18 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
 
       upload_requester = "commercial_reg";
 
-      StorageReference sRef = FirebaseStorage().ref().child("photos/"+User.uid+"/");
+      StorageReference sRef = FirebaseStorage().ref().child("payments/"+User.uid+"/");
       StorageReference sReg_photo = sRef.child("commercial_reg");
       StorageUploadTask task =  sReg_photo.putFile(selected_commercial_path);
-    //  AppConstants.getpDialog(context, "", "Please wait...");
+     // AppConstants.getpDialog(context, "", "Please wait...");
       uploadStatus(task);
-    //  AppConstants.dismisspDialog();
-
+     // AppConstants.dismisspDialog();
 
       return new DecorationImage(
           image: new FileImage(selected_commercial_path),
           fit: BoxFit.cover);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +178,7 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
                                           ),
                                           child: new SizedBox(
                                             width: 300,
-                                            child: new Text(AppConstants.getValue("37"),
+                                            child: new Text(AppConstants.getValue("45"),
                                             style: new TextStyle(
                                               color: Colors.green,
                                               fontWeight: FontWeight.normal,
@@ -208,6 +228,8 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
                                             child: new RaisedButton(
                                               onPressed: (){
 
+                                                payment_uploaded = false;
+
                                                 Future getImage() async {
                                                   var image = await ImagePicker
                                                       .pickImage(
@@ -249,7 +271,7 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
                                           padding: EdgeInsets.only(top: 12.0))
                                     ],
                                   ),
-                                  new Row(
+                               /*   new Row(
                                     children: <Widget>[
                                       new Theme(
                                         data:new ThemeData(
@@ -308,6 +330,7 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
                                             child: new RaisedButton(
                                               onPressed: (){
 
+                                                print("Salon >> Upload Picture >> Selected...");
                                                 Future getImage() async {
                                                   var image = await ImagePicker
                                                       .pickImage(
@@ -325,7 +348,6 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
                                                   });
                                                 };
                                                 getImage();
-
                                               },
                                               color: Colors.green,
                                               child: new Text(
@@ -342,7 +364,7 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
                                     ],
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                  ),
+                                  ),*/
                                   new Row(
                                     children: <Widget>[
                                       new Padding(
@@ -358,8 +380,22 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
                                             height: 40,
                                             child: new RaisedButton(
                                               onPressed: (){
-                                                // Navigator.pop(context);
-                                                saveDataInDb();
+                                               // Navigator.pop(context);
+
+                                              //  saveDataInDb();
+
+
+
+                                                if(payment_uploaded) {
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              Login()));
+                                                }else{
+                                                  AppConstants.sDialog(context,
+                                                      AppConstants.getValue("40"),
+                                                      AppConstants.getValue("47"));
+                                                }
                                               },
                                               color: Colors.green,
                                               child: new Text(
@@ -394,7 +430,7 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
     );
   }
 
-  void saveDataInDb()
+  /*void saveDataInDb()
   {
     AppConstants.getpDialog(context, "", "Please wait...");
     DatabaseReference dBase = FirebaseDatabase.instance.reference();
@@ -420,15 +456,17 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
       "photography":User.photography,
       "profile_pic1": User.profile_pic1,
       "profile_pic2":User.profile_pic2,
-      "selected_type":SelectOptions.selected_option
+      "selected_type":SelectOptions.selected_option,
+      "registration_status": false
     }).then((_value){
       // print("Data Inserted Successfully...");
       AppConstants.dismisspDialog();
-      Navigator.push(context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  Login()));
+        Navigator.push(context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    Login()));
     });
-  }
+  }*/
+
 
 }

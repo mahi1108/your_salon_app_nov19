@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'SelectOptions.dart';
 import 'package:your_salon_app/CustomerDashboard.dart';
-
+import 'AppConstants.dart';
+import 'SalonRegistrationStatus.dart';
+import 'User.dart';
 class Login extends StatefulWidget
 {
   @override
@@ -13,6 +17,11 @@ class Login extends StatefulWidget
 
 class LoginState extends State<Login>
 {
+
+  TextEditingController uname_cont = new TextEditingController();
+  TextEditingController pass_cont = new TextEditingController();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -26,7 +35,7 @@ class LoginState extends State<Login>
                 Navigator.pop(context, false);
               }),
           backgroundColor: Colors.green,
-          title: new Text("Your Salon",
+          title: new Text(AppConstants.getValue("1"),
             style: new TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.normal,
@@ -71,11 +80,12 @@ class LoginState extends State<Login>
                                     )
                                 ),
                                 prefixIcon: const Icon(Icons.account_circle),
-                                hintText: 'Username',
-                                labelText: 'Username',
-                                helperText: '* Username should be Email ID',
+                                hintText: AppConstants.getValue("2"),
+                                labelText: AppConstants.getValue("2"),
+                                helperText: AppConstants.getValue("3"),
                                 prefixStyle: const TextStyle(color: Colors.green)
                             ),
+                            controller: uname_cont,
                           ),
                         ))
                       ],
@@ -106,11 +116,12 @@ class LoginState extends State<Login>
                                         )
                                     ),
                                     prefixIcon: Icon(Icons.lock),
-                                    hintText: 'Password',
-                                    labelText: 'Password',
-                                    helperText: '* Password should be >= 6 characters',
+                                    hintText: AppConstants.getValue("4"),
+                                    labelText: AppConstants.getValue("4"),
+                                    helperText:AppConstants.getValue("5"),
                                     prefixStyle: const TextStyle(color: Colors.green)
                                 ),
+                                controller: pass_cont,
                               ),
                             ))
 
@@ -134,12 +145,28 @@ class LoginState extends State<Login>
                             height: 40,
                             child: new RaisedButton(
                               onPressed: (){
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context)=>CustomerDashboard()));
+
+                                String uname = uname_cont.text.trim().toString();
+                                String pass = pass_cont.text.trim().toString();
+
+                                print("uname : "+ uname +"\t pass :"+ pass);
+
+                                if(uname != null && uname != "" &&
+                                        pass != null && pass != "")
+                                {
+                                    login(uname,pass);
+                                }else{
+                                  AppConstants.sDialog(context, AppConstants.getValue("40"),
+                                      AppConstants.getValue("42"));
+                                 // login(uname,pass);
+                                }
+
+                              /*  Navigator.push(context,
+                                    MaterialPageRoute(builder: (context)=>CustomerDashboard())); */
                               },
                               color: Colors.green,
                               child: new Text(
-                                "Login",
+                                AppConstants.getValue("6"),
                                 style: new TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,
@@ -174,7 +201,7 @@ class LoginState extends State<Login>
                               },
                               color: Colors.green,
                               child: new Text(
-                                "New User?",
+                                AppConstants.getValue("7"),
                                 style: new TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,
@@ -208,7 +235,7 @@ class LoginState extends State<Login>
                                 },
                                 color: Colors.green,
                                 child: new Text(
-                                  "Forgot Credentials?",
+                                  AppConstants.getValue("8"),
                                   style: new TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.normal,
@@ -233,6 +260,97 @@ class LoginState extends State<Login>
         ),
       ),
     );
+  }
+
+  Future<String> login(email,pass) async {
+
+    AppConstants.getpDialog(context, "", "Please wait...");
+
+    try {
+      FirebaseUser user = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: pass);
+
+
+
+      print("User Id : " + user.uid);
+      AppConstants.dismisspDialog();
+
+      if(user.uid != null){
+        User.uid = user.uid;
+        readDataFromDB(user.uid);
+        /*
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context)=>CustomerDashboard())); */
+      }
+
+    }catch(e){
+      AppConstants.dismisspDialog();
+
+      AppConstants.sDialog(context, AppConstants.getValue("40"),
+          AppConstants.getValue("43"));
+
+        print(e);
+    }
+
+    return "";
+  }
+
+  void readDataFromDB(uid)
+  {
+    try {
+      AppConstants.getpDialog(context, "", "Please wait...");
+      print("Inside readDataFromDB function..." + uid);
+      DatabaseReference dBase = FirebaseDatabase.instance.reference();
+      DatabaseReference uRef = dBase.child("users/" + uid + "/selected_type");
+      Future<DataSnapshot> _ds = uRef.once().then((DataSnapshot ds) {
+        print(ds.key + ": \t " + ds.value.toString());
+        AppConstants.dismisspDialog();
+        if (ds.value != null && ds.value != "" ) {
+          if(ds.value == 4) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CustomerDashboard()));
+          }else{
+            readOtherUsersData(uid);
+          }
+        } else {
+          AppConstants.sDialog(context, AppConstants.getValue("40"),
+              AppConstants.getValue("43"));
+        }
+      });
+    }catch(e){
+      AppConstants.dismisspDialog();
+      AppConstants.sDialog(context, AppConstants.getValue("40"),
+          AppConstants.getValue("43"));
+      print(e);
+    }
+
+  }
+
+  void readOtherUsersData(String uid)
+  {
+
+    AppConstants.getpDialog(context, "", "Please wait...");
+
+    try {
+      DatabaseReference dBase = FirebaseDatabase.instance.reference();
+      DatabaseReference uRef = dBase.child("users/" + uid + "/registration_status");
+      Future<DataSnapshot> _ds = uRef.once().then((DataSnapshot ds) {
+        AppConstants.dismisspDialog();
+
+        AppConstants.registration_status = ds.value;
+
+        if(AppConstants.registration_status){
+            AppConstants.sDialog(context,
+                AppConstants.getValue("40"), AppConstants.getValue("44"));
+        }else{
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => SalonRegistrationStatus()));
+        }
+
+      });
+    }catch(e){
+      AppConstants.dismisspDialog();
+    }
   }
 
 }

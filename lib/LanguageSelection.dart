@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'SelectOptions.dart';
 import 'Login.dart';
+import 'AppConstants.dart';
 
 class LanguageSelection extends StatefulWidget
 {
@@ -162,6 +163,14 @@ class LanguageSelectionState extends State<LanguageSelection>
                               width: 250,
                               child: new RaisedButton(
                                 onPressed: (){
+
+                                  if(arab_rbn_value){
+                                      AppConstants.current_locale = "ar_SA";
+                                  }else if(eng_rbn_value){
+                                    AppConstants.current_locale = "en_US";
+                                  }
+
+
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context)=>Login()));
                                 },
