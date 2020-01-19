@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "29870793785",
+    "firebase_url": "https://your-salon-new.firebaseio.com",
+    "project_id": "your-salon-new",
+    "storage_bucket": "your-salon-new.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29870793785:android:ccd1a8ce7ef99249",
+        "android_client_info": {
+          "package_name": "com.cubex.your_salon_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29870793785-apajjasnh5aun7ot10n0pqkct2n5tejm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqLzqcxHlBMjBlF1tclQKZdryVXOBlam0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29870793785-apajjasnh5aun7ot10n0pqkct2n5tejm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "29870793785-cbukkpep5lbhr956243et60odp5hfno5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cubex.yourSalonApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
