@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'Login.dart';
 import 'SelectOptions.dart';
@@ -48,6 +49,7 @@ class SalonRegistrationState extends State<SalonRegistration>
       print("User is :" + user.email);
 
       if (user.uid != null) {
+        getFCMNumber();
         User.email = email;
         User.pass = pass;
         User.mno = mno;
@@ -106,7 +108,8 @@ class SalonRegistrationState extends State<SalonRegistration>
         "password":User.pass,
         "location":User.location,
         "city":User.city,
-        "selected_type":SelectOptions.selected_option
+        "selected_type":SelectOptions.selected_option,
+        "fcm_token": User.fcm_token
       }).then((_value){
              // print("Data Inserted Successfully...");
         AppConstants.dismisspDialog();
@@ -387,4 +390,24 @@ class SalonRegistrationState extends State<SalonRegistration>
     );
   }
 
+  void getFCMNumber(){
+    FirebaseMessaging _fcm = new FirebaseMessaging();
+
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) {
+        print('onMessage called: $message');
+      },
+      onResume: (Map<String, dynamic> message) {
+        print('onResume called: $message');
+      },
+      onLaunch: (Map<String, dynamic> message) {
+        print('onLaunch called: $message');
+      },
+    );
+
+    _fcm.getToken().then((token){
+      print("FCM Token is : "+ token.toString());
+      User.fcm_token = token.toString();
+    });
+  }
 }

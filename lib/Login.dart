@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'SelectOptions.dart';
@@ -6,6 +7,8 @@ import 'package:your_salon_app/CustomerDashboard.dart';
 import 'AppConstants.dart';
 import 'SalonRegistrationStatus.dart';
 import 'User.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 class Login extends StatefulWidget
 {
   @override
@@ -21,6 +24,7 @@ class LoginState extends State<Login>
   TextEditingController uname_cont = new TextEditingController();
   TextEditingController pass_cont = new TextEditingController();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
 
   @override
   Widget build(BuildContext context) {

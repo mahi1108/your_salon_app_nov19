@@ -21,4 +21,5 @@ class User
  static String profile_pic1="";
  static String profile_pic2="";
  static String user_type = "";
+ static String fcm_token = "";
 }

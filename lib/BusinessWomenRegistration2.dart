@@ -420,7 +420,8 @@ class BusinessWomenRegistrationState2 extends State<BusinessWomenRegistration2>
       "photography":User.photography,
       "profile_pic1": User.profile_pic1,
       "profile_pic2":User.profile_pic2,
-      "selected_type":SelectOptions.selected_option
+      "selected_type":SelectOptions.selected_option,
+      "fcm_token" : User.fcm_token
     }).then((_value){
       // print("Data Inserted Successfully...");
       AppConstants.dismisspDialog();

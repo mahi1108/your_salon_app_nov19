@@ -427,7 +427,8 @@ class SalonRegistrationState2 extends State<SalonRegistration2>
       "profile_pic1": User.profile_pic1,
       "profile_pic2":User.profile_pic2,
       "selected_type":SelectOptions.selected_option,
-      "registration_status": false
+      "registration_status": false,
+      "fcm_token" : User.fcm_token
     }).then((_value){
       // print("Data Inserted Successfully...");
       AppConstants.dismisspDialog();
